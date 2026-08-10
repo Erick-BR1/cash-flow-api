@@ -1,5 +1,4 @@
-﻿
-using CashFlow.Communication.Enum;
+﻿using CashFlow.Communication.Enums;
 
 namespace CashFlow.Communication.Requests;
 
