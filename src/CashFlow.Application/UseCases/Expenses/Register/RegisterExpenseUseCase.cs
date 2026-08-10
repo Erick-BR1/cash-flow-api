@@ -1,6 +1,6 @@
 ﻿using CashFlow.Communication.Reponses;
 using CashFlow.Communication.Requests;
-using FluentValidation;
+using CashFlow.Exception.ExceptionsBase;
 
 namespace CashFlow.Application.UseCases.Expenses.Register;
 
@@ -21,7 +21,7 @@ public class RegisterExpenseUseCase
         if(result.IsValid == false)
         {
             var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
-            throw new ArgumentException();
+            throw new ErrorOnValidationException(errorMessages);
         }
     }
 }

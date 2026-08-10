@@ -2,8 +2,9 @@
 
 public class ResponseError
 {
-    // required para obrigar a mensagem de erro
-    public required string ErrorMessage { get; set; } = string.Empty;
+    public List<string> ErrorMessages { get; set; } = [];
 
-    public ResponseError(string errorMessage) { ErrorMessage = errorMessage; }
+    public ResponseError(string errorMessage) { ErrorMessages = [errorMessage]; }
+
+    public ResponseError(List<string> errorMessages) { ErrorMessages = errorMessages; }
 }
