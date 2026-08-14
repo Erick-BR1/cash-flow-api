@@ -2,7 +2,7 @@
 
 namespace CashFlow.Domain.Entities;
 
-internal class Expense
+public class Expense
 {
     public long Id { get; set; }
     public string Title { get; set; } = string.Empty;
