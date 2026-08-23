@@ -4,7 +4,7 @@ using CashFlow.Domain.Repositories.Expenses;
 
 namespace CashFlow.Application.UseCases.Expenses.GetAll;
 
-public class GetAllExpensesUseCase : IGetAllExpenseUseCase
+public class GetAllExpensesUseCase : IGetAllExpensesUseCase
 {
     private readonly IExpensesRepository _repository;
     private readonly IMapper _mapper;
