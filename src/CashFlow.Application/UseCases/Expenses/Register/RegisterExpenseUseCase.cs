@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CashFlow.Communication.Reponses;
+using CashFlow.Communication.Responses;
 using CashFlow.Communication.Requests;
 using CashFlow.Domain.Entities;
 using CashFlow.Domain.Repositories;
@@ -14,18 +14,21 @@ public class RegisterExpenseUseCase : IRegisterExpenseUseCase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public RegisterExpenseUseCase(IExpensesWriteOnlyRepository repository, IUnitOfWork unitOfWork, IMapper mapper)
+    public RegisterExpenseUseCase(
+        IExpensesWriteOnlyRepository repository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task<ResponseRegisteredExpense> Execute (RequestRegisterExpense request)
+    public async Task<ResponseRegisteredExpense> Execute(RequestExpense request)
     {
         Validate(request);
 
-        var entity =  _mapper.Map<Expense>(request);
+        var entity = _mapper.Map<Expense>(request);
 
         await _repository.Add(entity);
 
@@ -34,15 +37,16 @@ public class RegisterExpenseUseCase : IRegisterExpenseUseCase
         return _mapper.Map<ResponseRegisteredExpense>(entity);
     }
 
-    private void Validate(RequestRegisterExpense request)
+    private void Validate(RequestExpense request)
     {
-        var validator = new RegisterExpenseValidator();
-        
+        var validator = new ExpenseValidator();
+
         var result = validator.Validate(request);
 
-        if(result.IsValid == false)
+        if (result.IsValid == false)
         {
             var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
+
             throw new ErrorOnValidationException(errorMessages);
         }
     }

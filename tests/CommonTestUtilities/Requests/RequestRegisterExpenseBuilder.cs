@@ -6,9 +6,9 @@ namespace CommonTestUtilities.Requests;
 
 public class RequestRegisterExpenseBuilder
 {
-    public static RequestRegisterExpense Build()
+    public static RequestExpense Build()
     {
-        return new Faker<RequestRegisterExpense>()
+        return new Faker<RequestExpense>()
             .RuleFor(x=>x.Title, f => f.Commerce.ProductName())
             .RuleFor(x=>x.Description, f => f.Commerce.ProductDescription())
             .RuleFor(x=>x.Date, f => f.Date.Past())

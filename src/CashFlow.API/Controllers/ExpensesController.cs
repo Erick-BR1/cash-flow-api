@@ -2,8 +2,9 @@
 using CashFlow.Application.UseCases.Expenses.GetAll;
 using CashFlow.Application.UseCases.Expenses.GetById;
 using CashFlow.Application.UseCases.Expenses.Register;
-using CashFlow.Communication.Reponses;
+using CashFlow.Application.UseCases.Expenses.Update;
 using CashFlow.Communication.Requests;
+using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlow.API.Controllers;
@@ -17,7 +18,7 @@ public class ExpensesController : ControllerBase
     [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(
         [FromServices] IRegisterExpenseUseCase useCase,
-        [FromBody] RequestRegisterExpense request)
+        [FromBody] RequestExpense request)
     {
         var response = await useCase.Execute(request);
 
@@ -31,7 +32,7 @@ public class ExpensesController : ControllerBase
     {
         var response = await useCase.Execute();
 
-        if(response.Expenses.Count != 0)
+        if (response.Expenses.Count != 0)
         {
             return Ok(response);
         }
@@ -43,7 +44,7 @@ public class ExpensesController : ControllerBase
     [Route("{id}")]
     [ProducesResponseType(typeof(ResponseExpenses), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetById ([FromServices] IGetExpenseByIdUseCase useCase, [FromRoute]long id)
+    public async Task<IActionResult> GetById([FromServices] IGetExpenseByIdUseCase useCase, [FromRoute] long id)
     {
         var response = await useCase.Execute(id);
 
@@ -59,6 +60,21 @@ public class ExpensesController : ControllerBase
         [FromRoute] long id)
     {
         await useCase.Execute(id);
+
+        return NoContent();
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(
+        [FromServices] IUpdateExpenseUseCase useCase,
+        [FromRoute] long id,
+        [FromBody] RequestExpense request)
+    {
+        await useCase.Execute(id, request);
 
         return NoContent();
     }
